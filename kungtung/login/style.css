@@ -1,0 +1,392 @@
+/* ============================================================
+   Kung Tung Liquor Shop — Auth Theme (login / register flow)
+   Matches the main site's palette, type, and motion language.
+   ============================================================ */
+
+:root{
+  --bg:#180C12;
+  --bg-panel:#241119;
+  --bg-panel-2:#2C1420;
+  --wine:#6B1029;
+  --wine-light:#9B2242;
+  --wine-glow:rgba(155,34,66,.35);
+  --gold:#C9A961;
+  --gold-bright:#E4C888;
+  --cream:#F3E9DD;
+  --muted:#AE96A0;
+  --line:rgba(201,169,97,.18);
+  --shadow: 0 30px 60px -20px rgba(0,0,0,.6);
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+
+*{box-sizing:border-box;}
+
+html{
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  min-height:100dvh; /* mobile browser chrome-safe viewport */
+  background:var(--bg);
+  color:var(--cream);
+  font-family:'Sora',sans-serif;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:clamp(24px, 6vw, 60px) clamp(14px, 5vw, 20px);
+  position:relative;
+  overflow-x:hidden;
+}
+
+/* Ambient wine-glow backdrop, same feel as the homepage vignette */
+body::before{
+  content:"";
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(120% 90% at 50% -10%, rgba(155,34,66,.16), transparent 60%),
+    radial-gradient(140% 100% at 50% 110%, rgba(0,0,0,.55), transparent 55%);
+}
+
+/* subtle film grain, same as home */
+body::after{
+  content:"";
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1,h2,h3{
+  font-family:'Fraunces',serif;
+  font-weight:500;
+  margin:0;
+  letter-spacing:-.01em;
+}
+
+a{color:inherit;text-decoration:none;}
+
+.brand-mark{
+  position:relative;z-index:1;
+  display:flex;align-items:baseline;justify-content:center;gap:6px;
+  font-family:'Fraunces',serif;
+  font-size:clamp(13px, 3.6vw, 15px);
+  font-weight:600;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--cream);margin-bottom:22px;
+  text-align:center;
+}
+.brand-mark .amp{color:var(--gold);font-style:italic;font-weight:400;text-transform:none;}
+
+/* ===== CARD ===== */
+.card{
+  position:relative;z-index:1;
+  background:linear-gradient(160deg, var(--bg-panel), var(--bg-panel-2));
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:clamp(26px, 5vw, 40px) clamp(20px, 5vw, 38px) clamp(24px, 4.5vw, 36px);
+  width:100%;
+  max-width:440px;
+  box-shadow:var(--shadow);
+  animation:cardIn .7s var(--ease);
+}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(18px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-bottom:14px;
+}
+.eyebrow::before, .eyebrow::after{
+  content:"";
+  width:22px;height:1px;
+  background:var(--gold);
+  display:inline-block;
+  flex-shrink:0;
+}
+
+h1{
+  font-size:clamp(21px, 5.5vw, 26px);
+  text-align:center;
+  margin-bottom:6px;
+}
+h1 .ital{font-style:italic;font-weight:400;color:var(--gold-bright);}
+
+p.sub{
+  text-align:center;
+  color:var(--muted);
+  font-size:clamp(12.5px, 3.4vw, 13.5px);
+  margin:0 0 28px;
+  line-height:1.5;
+}
+p.sub strong{color:var(--gold-bright);font-weight:500;}
+
+/* ===== STEP INDICATOR ===== */
+.steps{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  margin-bottom:30px;
+  flex-wrap:wrap;
+}
+.steps span{
+  width:26px;height:26px;
+  border-radius:50%;
+  background:var(--bg);
+  border:1px solid var(--line);
+  color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+  font-size:11.5px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  transition:all .3s var(--ease);
+}
+.steps span + span{margin-left:-2px;}
+.steps span.active{
+  background:linear-gradient(120deg,var(--gold),var(--gold-bright));
+  border-color:var(--gold);
+  color:#1c0e14;
+  font-weight:600;
+  box-shadow:0 0 0 4px rgba(201,169,97,.14);
+}
+.steps span.done{
+  background:rgba(201,169,97,.12);
+  border-color:var(--gold);
+  color:var(--gold-bright);
+}
+
+/* ===== ALERTS ===== */
+.error, .info{
+  font-family:'Sora',sans-serif;
+  font-size:13px;
+  padding:12px 14px;
+  border-radius:10px;
+  margin-bottom:18px;
+  line-height:1.5;
+  word-break:break-word;
+}
+.error{
+  background:rgba(155,34,66,.14);
+  color:#F0B7C4;
+  border:1px solid rgba(155,34,66,.45);
+}
+.info{
+  background:rgba(138,150,120,.12);
+  color:#C9D6BC;
+  border:1px solid rgba(138,150,120,.4);
+}
+
+/* ===== FORM ===== */
+form{display:flex;flex-direction:column;}
+
+label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin:16px 0 8px;
+  transition:color .3s;
+}
+label:first-of-type{margin-top:0;}
+
+input, textarea{
+  width:100%;
+  padding:13px 14px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  background:rgba(20,10,15,.55);
+  color:var(--cream);
+  font-family:'Sora',sans-serif;
+  /* 16px min on mobile prevents iOS Safari auto-zoom on focus */
+  font-size:max(16px, 14.5px);
+  transition:border-color .3s, background .3s;
+}
+input::placeholder, textarea::placeholder{color:rgba(174,150,160,.55);}
+input:focus, textarea:focus{
+  outline:none;
+  border-color:var(--gold);
+  background:rgba(20,10,15,.85);
+}
+
+/* OTP field gets a little breathing room / letter spacing */
+#otp{
+  letter-spacing:.5em;
+  text-align:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:20px;
+  padding:14px 10px;
+}
+
+button{
+  font-family:inherit;
+  cursor:pointer;
+  border:none;
+}
+
+button[type="submit"]{
+  margin-top:26px;
+  padding:15px;
+  border-radius:100px;
+  background:linear-gradient(120deg,var(--gold),var(--gold-bright));
+  color:#1c0e14;
+  font-weight:600;
+  font-size:13px;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  transition:transform .3s var(--ease), box-shadow .3s;
+  width:100%;
+}
+button[type="submit"]:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 30px -8px rgba(201,169,97,.5);
+}
+button[type="submit"]:active{transform:translateY(0);}
+button[type="submit"]:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none;}
+
+/* ===== FOOTER LINKS ===== */
+.notice{
+  font-size:12.5px;
+  color:var(--muted);
+  text-align:center;
+  margin-top:20px;
+  line-height:1.7;
+}
+a.link{
+  color:var(--gold);
+  font-size:inherit;
+  border-bottom:1px solid transparent;
+  transition:border-color .3s, color .3s;
+}
+a.link:hover{color:var(--gold-bright);border-color:var(--gold-bright);}
+
+/* ===== FORGOT PASSWORD LINK ===== */
+.forgot-link{
+  display:inline-block;
+  align-self:flex-end;
+  margin-top:10px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.02em;
+  color:var(--muted);
+  border-bottom:1px solid transparent;
+  transition:color .3s, border-color .3s;
+}
+.forgot-link:hover{
+  color:var(--gold-bright);
+  border-color:var(--gold-bright);
+}
+
+/* ===== SUCCESS / CHECK STATE (success.php, dashboard.php) ===== */
+.check-circle{
+  width:64px;height:64px;
+  border-radius:50%;
+  border:2px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;
+  animation:popIn .5s var(--ease);
+  flex-shrink:0;
+}
+@keyframes popIn{
+  from{transform:scale(0);opacity:0;}
+  to{transform:scale(1);opacity:1;}
+}
+
+/* ===== RESPONSIVE ===== */
+
+/* Tablets / small laptops: tighten outer spacing a touch */
+@media (max-width:768px){
+  body{padding:clamp(20px, 5vw, 40px) 16px;}
+  .card{max-width:420px;}
+}
+
+/* Phones */
+@media (max-width:480px){
+  .card{padding:28px 20px 26px;border-radius:16px;}
+  h1{font-size:21px;}
+  .steps{gap:6px;}
+  .steps span{width:24px;height:24px;font-size:10.5px;}
+  #otp{letter-spacing:.35em;font-size:18px;padding:13px 8px;}
+  button[type="submit"]{padding:14px;font-size:12.5px;}
+}
+
+/* Small / narrow phones (e.g. SE, folded devices) */
+@media (max-width:360px){
+  body{padding:16px 10px;}
+  .card{padding:24px 16px 22px;border-radius:14px;}
+  .brand-mark{font-size:12px;margin-bottom:16px;}
+  h1{font-size:19px;}
+  p.sub{font-size:12px;margin-bottom:22px;}
+  .eyebrow{font-size:10px;letter-spacing:.18em;}
+  .eyebrow::before, .eyebrow::after{width:14px;}
+  #otp{letter-spacing:.2em;font-size:16px;padding:12px 6px;}
+  .notice{font-size:11.5px;}
+}
+
+/* Short viewports (landscape phones, small laptops with browser chrome) */
+@media (max-height:560px) and (orientation:landscape){
+  body{
+    align-items:flex-start;
+    padding-top:20px;
+    padding-bottom:20px;
+  }
+  .card{animation:none;}
+  .brand-mark{margin-bottom:14px;}
+  .steps{margin-bottom:18px;}
+  p.sub{margin-bottom:18px;}
+  label{margin:10px 0 6px;}
+  label:first-of-type{margin-top:0;}
+  button[type="submit"]{margin-top:16px;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+}
+
+
+/* Row that holds the Password label + Forgot link side by side */
+.label-row{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  margin:16px 0 8px;
+}
+.label-row label{
+  margin:0; /* label-row handles the spacing instead */
+}
+
+.forgot-link{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+  letter-spacing:.02em;
+  color:var(--muted);
+  border-bottom:1px solid transparent;
+  transition:color .3s, border-color .3s;
+  white-space:nowrap;
+}
+.forgot-link:hover{
+  color:var(--gold-bright);
+  border-color:var(--gold-bright);
+}
+
+/* Small phones: stack if it gets too tight */
+@media (max-width:360px){
+  .label-row{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:4px;
+  }
+}
